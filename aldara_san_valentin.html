@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Para Aldara 💖</title>
+
+<style>
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    overflow: hidden;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+/* Fondo galaxia */
+body {
+    background: radial-gradient(circle at top, #2b1055, #0b0c2a, #000);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+}
+
+/* Estrellas */
+.stars {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    box-shadow:
+        20vw 10vh white,
+        40vw 80vh white,
+        70vw 30vh white,
+        10vw 60vh white,
+        90vw 50vh white;
+    animation: twinkle 4s infinite alternate;
+}
+
+@keyframes twinkle {
+    from { opacity: 0.4; }
+    to { opacity: 1; }
+}
+
+/* Corazones flotando */
+.heart {
+    position: absolute;
+    color: #ff7eb3;
+    font-size: 20px;
+    animation: floatUp 10s linear infinite;
+}
+
+@keyframes floatUp {
+    from {
+        transform: translateY(100vh) scale(0.5);
+        opacity: 1;
+    }
+    to {
+        transform: translateY(-10vh) scale(1.2);
+        opacity: 0;
+    }
+}
+
+/* Tarjeta */
+.card {
+    position: relative;
+    background: rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(10px);
+    padding: 45px;
+    border-radius: 25px;
+    text-align: center;
+    max-width: 420px;
+    box-shadow: 0 0 40px rgba(255, 126, 179, 0.4);
+    animation: appear 2s ease;
+    z-index: 2;
+}
+
+@keyframes appear {
+    from {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+h1 {
+    font-size: 2.3em;
+    margin-bottom: 15px;
+}
+
+p {
+    font-size: 1.2em;
+    line-height: 1.6;
+}
+</style>
+</head>
+
+<body>
+
+<div class="stars"></div>
+
+<div class="card">
+    <h1>💖 Aldara 💖</h1>
+    <p>
+        Este <strong>14 de febrero</strong><br>
+        a las <strong>4:00 pm</strong><br><br>
+
+        Quiero invitarte a compartir<br>
+        un momento especial conmigo ✨<br><br>
+
+        <strong>Lugar:</strong><br>
+        Virtualmente, para sentirme más cerca de ti 💫
+    </p>
+</div>
+
+<!-- Corazones -->
+<script>
+for (let i = 0; i < 20; i++) {
+    let heart = document.createElement("div");
+    heart.className = "heart";
+    heart.innerHTML = "💖";
+    heart.style.left = Math.random() * 100 + "vw";
+    heart.style.animationDuration = (6 + Math.random() * 6) + "s";
+    heart.style.fontSize = (14 + Math.random() * 20) + "px";
+    document.body.appendChild(heart);
+}
+</script>
+
+</body>
+</html>
+  
