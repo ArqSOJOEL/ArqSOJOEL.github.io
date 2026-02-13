@@ -1,204 +1,161 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<title>Aldara ♤</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>💘</title>
 
 <style>
-html, body {
-    margin: 0;
-    padding: 0;
-    height: 100%;
-    overflow: hidden;
-    font-family: 'Segoe UI', sans-serif;
-    background: black;
-    color: white;
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, sans-serif;
 }
 
-/* ===== GALAXIA ===== */
-canvas {
-    position: fixed;
-    inset: 0;
-    z-index: 0;
+body{
+    background:radial-gradient(circle at top, #1a0033, #000);
+    height:100vh;
+    overflow:hidden;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    color:white;
 }
 
-.galaxy {
-    position: fixed;
-    inset: -50%;
-    background:
-        radial-gradient(circle at 30% 30%, rgba(255,120,200,0.25), transparent 40%),
-        radial-gradient(circle at 70% 60%, rgba(120,180,255,0.25), transparent 45%),
-        radial-gradient(circle at center, #1b003a, #000 70%);
-    animation: spin 80s linear infinite;
-    z-index: 0;
+.container{
+    text-align:center;
+    position:relative;
+    z-index:5;
 }
 
-@keyframes spin {
-    from { transform: rotate(0deg) scale(1); }
-    to   { transform: rotate(360deg) scale(1.1); }
+h1{
+    font-size:2.2rem;
+    margin-bottom:40px;
 }
 
-/* ===== CONTENIDO ===== */
-.container {
-    position: relative;
-    z-index: 2;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    animation: fadeIn 2s ease forwards;
+.buttons{
+    display:flex;
+    gap:30px;
+    justify-content:center;
+    position:relative;
 }
 
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
+button{
+    font-size:1.5rem;
+    padding:15px 35px;
+    border:none;
+    border-radius:40px;
+    cursor:pointer;
 }
 
-h1 {
-    font-size: 3.2em;
-    letter-spacing: 4px;
-    margin-bottom: 20px;
-    text-shadow: 0 0 30px #ff7eb3;
+#yes{
+    background:#ff2f92;
+    color:white;
+    animation: heartbeat 1s infinite;
 }
 
-.question {
-    font-size: 1.6em;
-    margin-bottom: 45px;
+@keyframes heartbeat{
+    0%{ transform:scale(1); }
+    20%{ transform:scale(1.15); }
+    40%{ transform:scale(1); }
+    60%{ transform:scale(1.15); }
+    100%{ transform:scale(1); }
 }
 
-/* ===== BOTONES ===== */
-.buttons {
-    position: relative;
-    width: 320px;
-    height: 120px;
+#no{
+    background:#444;
+    color:white;
+    position:absolute;
 }
 
-button {
-    position: absolute;
-    padding: 18px 36px;
-    font-size: 1.2em;
-    border-radius: 40px;
-    border: none;
-    cursor: pointer;
-    transition: transform 0.25s ease;
+.fullscreen{
+    position:fixed;
+    inset:0;
+    background:radial-gradient(circle, #ff4da6, #1a0033);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+    font-size:2.3rem;
+    z-index:10;
+    animation: pop 0.6s ease;
 }
 
-#yes {
-    left: 0;
-    right: 0;
-    margin: auto;
-    background: #ff4d8d;
-    color: white;
-    box-shadow: 0 0 25px rgba(255,77,141,0.8);
+@keyframes pop{
+    from{ transform:scale(0); opacity:0; }
+    to{ transform:scale(1); opacity:1; }
 }
 
-#no {
-    background: rgba(255,255,255,0.15);
-    color: white;
-    left: 40px;
-    top: 70px;
+.heart{
+    position:fixed;
+    bottom:-40px;
+    animation: float 4s linear forwards;
+    pointer-events:none;
 }
 
-/* ===== RESULTADO ===== */
-.result {
-    display: none;
-    margin-top: 40px;
-    font-size: 1.8em;
-    text-shadow: 0 0 25px #ff7eb3;
-    animation: pop 0.8s ease forwards;
-}
-
-@keyframes pop {
-    from { transform: scale(0.8); opacity: 0; }
-    to   { transform: scale(1); opacity: 1; }
+@keyframes float{
+    to{
+        transform:translateY(-120vh);
+        opacity:0;
+    }
 }
 </style>
 </head>
 
 <body>
 
-<div class="galaxy"></div>
-<canvas id="stars"></canvas>
-
 <div class="container">
     <h1>Aldara ♤</h1>
+    <h1>¿Quieres ser mi San Valentín? 💖</h1>
 
-    <div class="question">
-        ¿Quieres ser mi San Valentín?
-    </div>
-
-    <div class="buttons" id="buttons">
-        <button id="yes">Sí</button>
-        <button id="no">No</button>
-    </div>
-
-    <div class="result" id="result">
-        No te arrepentirás VAGO 😌<br>
-        Nos vemos el 14 ♡
+    <div class="buttons">
+        <button id="yes">Sí 💘</button>
+        <button id="no">No 😢</button>
     </div>
 </div>
 
 <script>
-/* ===== ESTRELLAS ===== */
-const canvas = document.getElementById("stars");
-const ctx = canvas.getContext("2d");
-canvas.width = innerWidth;
-canvas.height = innerHeight;
-
-const stars = [];
-for (let i = 0; i < 200; i++) {
-    stars.push({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
-        s: Math.random() * 2,
-        v: Math.random() * 0.6 + 0.2
-    });
-}
-
-function drawStars() {
-    ctx.clearRect(0,0,canvas.width,canvas.height);
-    ctx.fillStyle = "white";
-    stars.forEach(st => {
-        ctx.fillRect(st.x, st.y, st.s, st.s);
-        st.y += st.v;
-        if (st.y > canvas.height) st.y = 0;
-    });
-    requestAnimationFrame(drawStars);
-}
-drawStars();
-
-/* ===== BOTÓN NO FUGITIVO ===== */
 const noBtn = document.getElementById("no");
 const yesBtn = document.getElementById("yes");
-const buttons = document.getElementById("buttons");
-const result = document.getElementById("result");
+let heartInterval = null;
 
-document.addEventListener("mousemove", e => {
-    const rect = noBtn.getBoundingClientRect();
-    const dx = e.clientX - (rect.left + rect.width / 2);
-    const dy = e.clientY - (rect.top + rect.height / 2);
-    const dist = Math.sqrt(dx*dx + dy*dy);
+// NO huye (más agresivo en móvil)
+noBtn.addEventListener("mouseover", moveNo);
+noBtn.addEventListener("touchstart", moveNo);
 
-    if (dist < 120) {
-        const x = Math.random() * (buttons.offsetWidth - rect.width);
-        const y = Math.random() * (buttons.offsetHeight - rect.height);
-        noBtn.style.left = x + "px";
-        noBtn.style.top = y + "px";
-    }
-});
+function moveNo(){
+    const x = Math.random() * (window.innerWidth - 120);
+    const y = Math.random() * (window.innerHeight - 80);
+    noBtn.style.left = x + "px";
+    noBtn.style.top = y + "px";
+}
 
-/* ===== ACCIÓN SÍ ===== */
+// CLICK EN SÍ
 yesBtn.addEventListener("click", () => {
-    buttons.style.display = "none";
-    result.style.display = "block";
+
+    const screen = document.createElement("div");
+    screen.className = "fullscreen";
+    screen.innerHTML = `
+        💖 No te arrepentirás VAGO 💖<br><br>
+        Nos vemos el 14 ♡
+    `;
+    document.body.appendChild(screen);
+
+    // iniciar lluvia infinita de corazones
+    heartInterval = setInterval(createHeart, 120);
 });
 
-window.onresize = () => {
-    canvas.width = innerWidth;
-    canvas.height = innerHeight;
-};
+function createHeart(){
+    const heart = document.createElement("div");
+    heart.className = "heart";
+    heart.innerHTML = "❤️";
+    heart.style.left = Math.random() * 100 + "vw";
+    heart.style.fontSize = (Math.random() * 25 + 20) + "px";
+    document.body.appendChild(heart);
+
+    setTimeout(() => heart.remove(), 4000);
+}
 </script>
 
 </body>
