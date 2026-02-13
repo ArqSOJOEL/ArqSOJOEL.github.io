@@ -8,15 +8,15 @@
 html, body {
     margin: 0;
     padding: 0;
-    height: 100%;
     overflow: hidden;
+    width: 100%;
+    height: 100%;
+    background: black;
     font-family: 'Segoe UI', sans-serif;
-    color: white;
 }
 
 /* FADE CINEMATOGRÁFICO */
 body {
-    background: black;
     animation: fadeIn 3s ease forwards;
 }
 
@@ -25,158 +25,151 @@ body {
     to { opacity: 1; }
 }
 
-/* GALAXIA */
-.galaxy {
+canvas {
     position: absolute;
-    inset: -50%;
-    background:
-        radial-gradient(circle at 30% 30%, rgba(255,120,200,0.25), transparent 40%),
-        radial-gradient(circle at 70% 60%, rgba(120,180,255,0.25), transparent 45%),
-        radial-gradient(circle at center, #1b003a, #000 70%);
-    animation: galaxyMove 60s linear infinite;
+    inset: 0;
 }
 
-@keyframes galaxyMove {
-    from { transform: rotate(0deg) scale(1); }
-    to { transform: rotate(360deg) scale(1.1); }
-}
-
-/* ESTRELLAS */
-.star {
-    position: absolute;
-    width: 2px;
-    height: 2px;
-    background: white;
-    border-radius: 50%;
-    opacity: 0.8;
-    animation: twinkle 3s infinite alternate;
-}
-
-@keyframes twinkle {
-    from { opacity: 0.2; }
-    to { opacity: 1; }
-}
-
-/* ESTRELLAS FUGACES */
-.shooting-star {
-    position: absolute;
-    width: 120px;
-    height: 2px;
-    background: linear-gradient(90deg, white, transparent);
-    opacity: 0.8;
-    animation: shoot 2s linear forwards;
-}
-
-@keyframes shoot {
-    from {
-        transform: translate(0,0);
-        opacity: 1;
-    }
-    to {
-        transform: translate(-600px, 600px);
-        opacity: 0;
-    }
-}
-
-/* ESCENA */
-.scene {
+/* TEXTO FLOTANTE */
+.text {
     position: absolute;
     inset: 0;
     display: flex;
     justify-content: center;
     align-items: center;
+    text-align: center;
+    color: white;
     z-index: 2;
+    pointer-events: none;
 }
 
-/* TEXTO */
-.invitation {
-    text-align: center;
+.text-inner {
+    animation: floatText 8s ease-in-out infinite;
+}
+
+@keyframes floatText {
+    0%,100% { transform: translateY(0); }
+    50% { transform: translateY(-20px); }
 }
 
 h1 {
-    font-size: 3.2em;
+    font-size: 3.4em;
     letter-spacing: 4px;
+    text-shadow: 0 0 25px #ff7eb3;
     margin-bottom: 20px;
-    opacity: 0;
-    animation: textReveal 2s ease forwards 1.5s, float 6s ease-in-out infinite 3.5s;
-    text-shadow: 0 0 25px rgba(255,150,220,0.9);
+    animation: glow 4s infinite alternate;
+}
+
+@keyframes glow {
+    from { text-shadow: 0 0 15px #ff7eb3; }
+    to { text-shadow: 0 0 35px #ffb3d9; }
 }
 
 p {
     font-size: 1.3em;
-    line-height: 1.7;
-    opacity: 0;
-    animation: textReveal 2s ease forwards 2.5s, floatSoft 8s ease-in-out infinite 4.5s;
-    text-shadow: 0 0 15px rgba(255,255,255,0.5);
-}
-
-@keyframes textReveal {
-    from {
-        opacity: 0;
-        transform: translateY(30px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-@keyframes float {
-    0%,100% { transform: translateY(0); }
-    50% { transform: translateY(-18px); }
-}
-
-@keyframes floatSoft {
-    0%,100% { transform: translateY(0); }
-    50% { transform: translateY(-10px); }
+    line-height: 1.8;
+    text-shadow: 0 0 12px rgba(255,255,255,0.6);
 }
 </style>
 </head>
 
 <body>
 
-<div class="galaxy"></div>
+<canvas id="canvas"></canvas>
 
-<!-- ESTRELLAS -->
-<script>
-for (let i = 0; i < 160; i++) {
-    const star = document.createElement("div");
-    star.className = "star";
-    star.style.left = Math.random() * 100 + "vw";
-    star.style.top = Math.random() * 100 + "vh";
-    star.style.animationDuration = (2 + Math.random() * 4) + "s";
-    document.body.appendChild(star);
-}
-</script>
-
-<!-- ESTRELLAS FUGACES -->
-<script>
-setInterval(() => {
-    const star = document.createElement("div");
-    star.className = "shooting-star";
-    star.style.left = Math.random() * 100 + "vw";
-    star.style.top = Math.random() * 40 + "vh";
-    document.body.appendChild(star);
-
-    setTimeout(() => star.remove(), 2000);
-}, 3500);
-</script>
-
-<div class="scene">
-    <div class="invitation">
+<div class="text">
+    <div class="text-inner">
         <h1>Aldara ♤</h1>
         <p>
             Este <strong>14 de febrero</strong><br>
             a las <strong>4:00 pm</strong><br><br>
 
-            Te invito a compartir un momento<br>
-            especial conmigo ✨<br><br>
+            Te invito a compartir<br>
+            un momento especial para los 2 ✨<br><br>
 
             <strong>Lugar:</strong><br>
             Virtualmente, para sentirme más cerca de ti 💫
         </p>
     </div>
 </div>
+
+<script>
+const canvas = document.getElementById("canvas");
+const ctx = canvas.getContext("2d");
+canvas.width = innerWidth;
+canvas.height = innerHeight;
+
+const stars = [];
+const hearts = [];
+
+for (let i = 0; i < 300; i++) {
+    stars.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        size: Math.random() * 2,
+        speed: Math.random() * 0.5 + 0.2
+    });
+}
+
+function drawStars() {
+    ctx.fillStyle = "white";
+    stars.forEach(s => {
+        ctx.fillRect(s.x, s.y, s.size, s.size);
+        s.y += s.speed;
+        if (s.y > canvas.height) s.y = 0;
+    });
+}
+
+function createHeart(cx, cy, scale) {
+    const points = [];
+    for (let t = 0; t < Math.PI * 2; t += 0.1) {
+        const x = 16 * Math.pow(Math.sin(t), 3);
+        const y = -(13 * Math.cos(t) - 5 * Math.cos(2*t) - 2 * Math.cos(3*t) - Math.cos(4*t));
+        points.push({
+            x: cx + x * scale,
+            y: cy + y * scale,
+            alpha: Math.random()
+        });
+    }
+    return points;
+}
+
+hearts.push(createHeart(canvas.width/2, canvas.height/2, 10));
+
+for (let i = 0; i < 6; i++) {
+    hearts.push(
+        createHeart(
+            canvas.width/2 + Math.cos(i)*260,
+            canvas.height/2 + Math.sin(i)*140,
+            6
+        )
+    );
+}
+
+function drawHearts() {
+    hearts.forEach(heart => {
+        heart.forEach(p => {
+            ctx.fillStyle = `rgba(255,105,180,${p.alpha})`;
+            ctx.fillRect(p.x, p.y, 2, 2);
+            p.alpha += (Math.random() - 0.5) * 0.05;
+        });
+    });
+}
+
+function animate() {
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    drawStars();
+    drawHearts();
+    requestAnimationFrame(animate);
+}
+
+animate();
+
+window.onresize = () => {
+    canvas.width = innerWidth;
+    canvas.height = innerHeight;
+};
+</script>
 
 </body>
 </html>
